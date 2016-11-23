@@ -1,14 +1,26 @@
-import React, {Component} from 'react';
+import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { createPost } from '../actions/index';
 import { Link } from 'react-router';
 
 class PostNew extends Component {
+    static contextTypes = {
+        router: PropTypes.object
+    };
+
+    onSubmit(props) {
+        this.props.createPost(props)
+            .then(() => { 
+                //Blog post has been created , navigate the user to the index
+                this.context.router.push('/');
+             });
+    }
+
     render() {
         const { fields: { title, categories, content }, handleSubmit } = this.props;
        
         return (
-            <form onSubmit={handleSubmit(this.props.createPost)} >
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <h3>Créer un article</h3>
                 <div className={`form-group ${title.touched && title.invalid ? 'has-danger': ''}`}>
                     <label>Titre</label>
@@ -53,7 +65,6 @@ function validate(values) {
      if(!values.content) {
         errors.content = "Entrez un contenu";
     }
-
 
     return errors;
 }
