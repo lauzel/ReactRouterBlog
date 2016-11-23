@@ -12,6 +12,9 @@ class PostNew extends Component {
                 <div className="form-group">
                     <label>Titre</label>
                     <input type="text" className="form-control" {...title} />
+                    <div className="text-help">
+                        {title.touched ? title.error: ""}
+                    </div>
                 </div>
                  <div className="form-group">
                     <label>Catégories</label>
@@ -28,10 +31,21 @@ class PostNew extends Component {
     }
 }
 
+function validate(values) {
+    const errors = {};
+
+    if(!values.title) {
+        errors.title = "Entrez un titre";
+    }
+
+    return errors;
+}
+
 //connect : first argument is mapStateToProps 
 //second : mapDispatchToProps 
 //redux Form : 1st is form config , and same argument than connect
 export default reduxForm({
     form: 'PostNew',
-    fields: ['title', 'categories', 'content']
+    fields: ['title', 'categories', 'content'],
+    validate
 },null,{createPost})(PostNew);
