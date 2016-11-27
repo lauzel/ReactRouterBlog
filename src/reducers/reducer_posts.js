@@ -10,9 +10,7 @@ export default function (state = postsInitialState, action) {
         case FETCH_POSTS:
             return { ...state, all: action.payload.data };
         case FETCH_POST: 
-            return { ...state, post: action.payload.data };
-        case DELETE_POST:
-            return state;
+            return { ...state, post: action.payload.data };       
         default:
             return state;
     }
